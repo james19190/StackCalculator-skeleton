@@ -28,12 +28,8 @@ public class MyStack<E> implements Stack<E> {
 	@Override
 	public void push(E item) throws RuntimeException {
 		/* Code Here */
-		if (mCursor == 128) {
-			throw new RuntimeException("exceed the limitation of the internal array space");
-		}
-		else {
-			mData[mCursor++] = item;
-		}
+		mData[mCursor++] = item;
+		
 	}
 
 	@Override

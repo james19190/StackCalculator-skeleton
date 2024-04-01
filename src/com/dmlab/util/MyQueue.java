@@ -1,7 +1,7 @@
 package com.dmlab.util;
 
 import com.dmlab.interfaces.Queue;
-import com.dmlab.util.EmptyQueueException;
+
 /**
  * Array-based Queue
  * The size of the internal array should be 128
@@ -28,20 +28,14 @@ public class MyQueue<E> implements Queue<E>{
 	@Override
 	public void add(E item) throws RuntimeException {
 		/* Code Here */
-		if (count == 128) {
-			throw new RuntimeException("exceed the limitation of the internal array space");
-		}
-		else {
 			mData[mCursor++] = item;
 			count++;
-		}
-
 	}
 
 	@Override
 	public E poll() throws EmptyQueueException {
 		/* Code Here */
-		if(empty()){
+		if(mCursor == mHead) {
 			throw new EmptyQueueException();
 		}
 		E item = mData[mHead];

@@ -28,42 +28,79 @@ public class StackCalculator {
 	 * 			the result from the calculation of given equation
 	 */
 
-	 public String infixToPostfix(String infix) {
-		/* Code Here */
-		String[] tokens = infix.split(" ");
-		for (String token : tokens) {
-			int type = typeOf(token);
-			if (type == TYPE_NUMBER) {
-				mQueue.add(token);
-			} else if (type == TYPE_OPERATOR) {
-				while (!mStack.empty() && prior(mStack.peek()) >= prior(token)) {
-					mQueue.add(mStack.pop());
-				}
-				mStack.push(token);
-			} else if (token.equals("(")) {
-				mStack.push(token);
-			} else if (token.equals(")")) {
-				while (!mStack.peek().equals("(")) {
-					mQueue.add(mStack.pop());
-				}
-				mStack.pop();
-			}
-		}
-		while (!mStack.empty()) {
-			mQueue.add(mStack.pop());
-		}
-		String postfix = "";
-		while (!mQueue.empty()) {
-			postfix += mQueue.poll() + " ";
-		}
-		return postfix;
-	 }
 
 	public int solve(String infix) {
 		/* Code Here */
 
+		String[] token = infix.split(" ");
+
+		for(int i=0; i<token.length; i++){
 			
-		return 0;
+			if(typeOf(token[i])==TYPE_OPERATOR){
+			
+				while(!mStack.empty() && !mStack.peek().equals("(")){
+					
+					if(prior(token[i]) <= prior(mStack.peek())) {
+						mQueue.add(mStack.pop());
+					}
+					
+					else {
+						break;
+					}
+				}
+
+				mStack.push(token[i]);
+			}
+
+			else if(typeOf(token[i])==TYPE_BRACE){
+				
+				if(token[i].equals("(")) {
+					mStack.push(token[i]);
+				}
+
+				else if(token[i].equals(")")){
+						try {
+							while(!mStack.empty() && !mStack.peek().equals("(")) mQueue.add(mStack.pop());
+							if(mStack.peek().equals("(")) mStack.pop();
+						} catch (Exception EmptyStackException) {
+							System.out.println("EmptyStackException");
+						}
+				}
+			}
+
+			else if(typeOf(token[i])==TYPE_NUMBER) {
+				mQueue.add(token[i]);
+			}
+		}
+
+		while (!mStack.empty()){
+			mQueue.add(mStack.pop());
+		}
+
+
+		while (true){
+			try{
+				String token_postfix = mQueue.poll();
+				
+				if(typeOf(token_postfix)==TYPE_OPERATOR){
+                    int sc1 = mStackCalc.pop();
+                    int sc2 = mStackCalc.pop();
+                    if(token_postfix.equals("+")) mStackCalc.push(sc2+sc1);
+                    else if(token_postfix.equals("-")) mStackCalc.push(sc2-sc1);
+                    else if(token_postfix.equals("*")) mStackCalc.push(sc2*sc1);
+                    else if(token_postfix.equals("/")) mStackCalc.push(sc2/sc1);
+                }
+				
+				else if(typeOf(token_postfix)==TYPE_NUMBER){
+				    int int_item = Integer.parseInt(token_postfix);
+                    mStackCalc.push(int_item);
+                }
+
+			}catch(Exception EmptyQueueException){
+				break;
+			}
+		}
+        return mStackCalc.pop();
 
 	}
 
