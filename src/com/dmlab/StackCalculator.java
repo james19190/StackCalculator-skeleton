@@ -27,8 +27,43 @@ public class StackCalculator {
 	 * @return
 	 * 			the result from the calculation of given equation
 	 */
+
+	 public String infixToPostfix(String infix) {
+		/* Code Here */
+		String[] tokens = infix.split(" ");
+		for (String token : tokens) {
+			int type = typeOf(token);
+			if (type == TYPE_NUMBER) {
+				mQueue.add(token);
+			} else if (type == TYPE_OPERATOR) {
+				while (!mStack.empty() && prior(mStack.peek()) >= prior(token)) {
+					mQueue.add(mStack.pop());
+				}
+				mStack.push(token);
+			} else if (token.equals("(")) {
+				mStack.push(token);
+			} else if (token.equals(")")) {
+				while (!mStack.peek().equals("(")) {
+					mQueue.add(mStack.pop());
+				}
+				mStack.pop();
+			}
+		}
+		while (!mStack.empty()) {
+			mQueue.add(mStack.pop());
+		}
+		String postfix = "";
+		while (!mQueue.empty()) {
+			postfix += mQueue.poll() + " ";
+		}
+		return postfix;
+	 }
+
 	public int solve(String infix) {
 		/* Code Here */
+
+			
+		return 0;
 
 	}
 

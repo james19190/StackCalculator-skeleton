@@ -1,7 +1,7 @@
 package com.dmlab.util;
 
 import com.dmlab.interfaces.Queue;
-
+import com.dmlab.util.EmptyQueueException;
 /**
  * Array-based Queue
  * The size of the internal array should be 128
