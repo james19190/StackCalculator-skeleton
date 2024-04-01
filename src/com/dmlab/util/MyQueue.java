@@ -19,7 +19,10 @@ public class MyQueue<E> implements Queue<E>{
 	@Override
 	public void clear() {
 		/* Code Here */
- 
+		mData = (E[]) new Object[128];
+		mCursor = 0;
+		mHead = 0;
+		count = 0;
 	}
 
 	@Override
